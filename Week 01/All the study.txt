@@ -1,0 +1,1341 @@
+Thursday 1:24 PM
+Day 1 — Vectors
+What to watch
+
+Go to YouTube. Search exactly: 3blue1brown essence of linear algebra chapter 1
+
+Watch only this one video. It is 9 minutes. Watch it fully, do not skip.
+
+What to focus on while watching:
+
+A vector is an arrow in space — not just a list of numbers
+Adding vectors = chaining arrows tip to tail
+Multiplying by a scalar = stretching or flipping the arrow
+What to code
+
+Open Jupyter notebook. Create a new file called day1_vectors.ipynb. Type every line yourself — do not copy paste.
+
+python
+import numpy as np
+import matplotlib.pyplot as plt
+
+# ── Part 1: Basic vector operations ──────────────────────
+
+v1 = np.array([2, 3])
+v2 = np.array([1, -1])
+
+print("v1 =", v1)
+print("v2 =", v2)
+print("v1 + v2 =", v1 + v2)        # adding vectors
+print("v1 - v2 =", v1 - v2)        # subtracting
+print("v1 × 3 =", v1 * 3)          # scalar multiply — stretches
+print("dot product =", np.dot(v1, v2))  # how aligned are they?
+print("length of v1 =", np.linalg.norm(v1))  # magnitude
+
+# ── Part 2: Visualize vectors ─────────────────────────────
+
+fig, ax = plt.subplots(figsize=(6, 6))
+
+# Draw v1 as red arrow from origin
+ax.annotate('', xy=v1, xytext=[0,0],
+            arrowprops=dict(arrowstyle='->', color='red', lw=2))
+ax.text(v1[0]+0.1, v1[1]+0.1, 'v1 = [2,3]', color='red', fontsize=12)
+
+# Draw v2 as blue arrow from origin
+ax.annotate('', xy=v2, xytext=[0,0],
+            arrowprops=dict(arrowstyle='->', color='blue', lw=2))
+ax.text(v2[0]+0.1, v2[1]+0.1, 'v2 = [1,-1]', color='blue', fontsize=12)
+
+# Draw v1+v2 as green arrow
+v_sum = v1 + v2
+ax.annotate('', xy=v_sum, xytext=[0,0],
+            arrowprops=dict(arrowstyle='->', color='green', lw=2))
+ax.text(v_sum[0]+0.1, v_sum[1]+0.1, 'v1+v2', color='green', fontsize=12)
+
+ax.set_xlim(-1, 4); ax.set_ylim(-2, 4)
+ax.axhline(0, color='black', lw=0.5)
+ax.axvline(0, color='black', lw=0.5)
+ax.grid(alpha=0.3)
+ax.set_aspect('equal')
+ax.set_title('Vectors as arrows in space')
+plt.show()
+
+# ── Part 3: Dot product intuition ─────────────────────────
+
+# Dot product measures how much two vectors point in same direction
+a = np.array([1, 0])   # pointing right
+b = np.array([1, 0])   # same direction
+c = np.array([0, 1])   # perpendicular
+d = np.array([-1, 0])  # opposite direction
+
+print("\nSame direction:    dot =", np.dot(a, b))   # positive
+print("Perpendicular:     dot =", np.dot(a, c))   # zero
+print("Opposite:          dot =", np.dot(a, d))   # negative
+
+After running — understand these three things:
+
+Adding vectors moves you through space
+Dot product = positive means same direction, zero means perpendicular, negative means opposite
+Length = how long the arrow is
+
+Save the file. Done for today.
+i want to understand all the math and thoery behid this everything in detail teach like you are a professor and teaching to a student and consider i have zero knowledge of this before
+
+I absolutely love this approach. If you study like this—watch the intuition, code it yourself, and deeply understand the math—you'll build an understanding that many ML engineers never get.
+
+For this lesson, forget programming for a while. Imagine I'm standing in front of a whiteboard teaching the very first lecture of a university Linear Algebra course.
+Chapter 1: What is a Vector?
+
+Before we even define a vector, we need to answer a question.
+Why do we even need vectors?
+
+Imagine you're standing at the center of a football field.
+
+Your friend asks:
+
+    "Where is the ball?"
+
+You answer:
+
+    "10"
+
+Is that enough information?
+
+No.
+
+10 what?
+
+    10 meters?
+
+    10 kilometers?
+
+    North?
+
+    South?
+
+    Up?
+
+The number alone is useless.
+
+To describe position, we need more information.
+
+We need
+
+    how far
+
+    which direction
+
+A vector gives us exactly these two things.
+
+    A vector is something that has both magnitude (length) and direction.
+
+Scalars vs Vectors
+
+A scalar is just one number.
+
+Examples
+
+Temperature = 30°C
+
+Age = 20
+
+Mass = 70kg
+
+These only have size.
+
+No direction.
+
+Vectors have both size and direction.
+
+Examples
+
+Walk 5 meters east.
+
+Wind blowing north at 20 km/h.
+
+Gravity pulling downward.
+
+Force pushing right.
+
+Velocity of a car.
+
+Notice every one of these tells us
+
+    how much
+
+    where
+
+Imagine an Arrow
+
+This is the single most important idea.
+
+Forget coordinates.
+
+Forget numbers.
+
+Imagine only an arrow.
+
+Origin
+
+•
+
+ \
+  \
+   \
+    ------>
+
+Every vector is simply an arrow.
+
+The arrow has
+
+    starting point
+
+    direction
+
+    length
+
+The starting point is often called the origin.
+Why is a Vector Drawn as an Arrow?
+
+Because arrows naturally show
+
+Direction
+
+-------->
+
+Length
+
+Long arrow
+
+-------------->
+
+Short arrow
+
+--->
+
+Different directions
+
+↑
+↓
+
+←
+
+↗
+
+Perfect.
+
+Nature already gave us the ideal representation.
+Coordinates
+
+Suppose this arrow ends here.
+
+      ●
+     /
+    /
+   /
+  ●
+
+How do we describe it?
+
+We use coordinates.
+
+Suppose it moves
+
+2 steps right
+
+3 steps up
+
+We write
+
+[2
+ 3]
+
+or
+
+(2,3)
+
+Both represent the same vector.
+
+This means
+
+Move
+
+2 in x-direction
+
+3 in y-direction
+
+Imagine graph paper.
+
+y
+
+4 |
+
+3 |          ●
+
+2 |
+
+1 |
+
+0 +---------------- x
+   0 1 2 3
+
+The point is
+
+(2,3)
+
+The vector is the arrow from
+
+(0,0)
+
+to
+
+(2,3)
+
+Why Two Numbers?
+
+Because our world (on paper) has two directions.
+
+Horizontal
+
+Vertical
+
+So we need
+
+[x
+ y]
+
+If we lived in only one dimension,
+
+only one number.
+
+If three dimensions,
+
+[x
+ y
+ z]
+
+What does
+
+v1 = np.array([2,3])
+
+mean?
+
+Python is simply storing
+
+x = 2
+
+y = 3
+
+Nothing magical.
+
+It is literally saying
+
+"My arrow goes
+
+2 right
+
+3 up."
+Vector Addition
+
+Now comes something beautiful.
+
+Suppose
+
+A
+
+↓
+
+(2,3)
+
+and
+
+B
+
+↓
+
+(1,-1)
+
+Let's understand what this means.
+
+Vector A
+
+Right 2
+
+Up 3
+
+Vector B
+
+Right 1
+
+Down 1
+
+Adding Them
+
+Instead of numbers,
+
+think of movement.
+
+Start at home.
+
+Walk
+
+2 right
+
+3 up
+
+You're here.
+
+Now continue.
+
+Walk
+
+1 right
+
+1 down
+
+Where are you now?
+
+Right movement
+
+2 + 1 = 3
+
+Up movement
+
+3 + (-1)
+
+=
+
+2
+
+Final position
+
+(3,2)
+
+Exactly why Python says
+
+v1+v2
+
+gives
+
+[3,2]
+
+Why Tip-to-Tail?
+
+Mathematicians draw it like this.
+
+First arrow
+
+•
+ \
+  \
+   →
+
+Second arrow starts
+
+where the first ends.
+
+•
+ \
+  \
+   •
+    \
+     →
+
+Instead of moving separately,
+
+you move continuously.
+
+The new arrow starts from the origin
+
+and ends at the final destination.
+
+That is vector addition.
+Vector Subtraction
+
+Suppose
+
+A = (2,3)
+
+B=(1,-1)
+
+Subtract
+
+A-B
+
+means
+
+2-1 =1
+
+3-(-1)=4
+
+Result
+
+(1,4)
+
+Geometrically,
+
+subtraction answers
+
+    "How do I move from B to A?"
+
+Scalar Multiplication
+
+This scares many beginners.
+
+It is actually very easy.
+
+Suppose
+
+Vector
+
+→
+
+Multiply by
+
+2
+
+It becomes
+
+---------->
+
+Same direction.
+
+Twice as long.
+
+Multiply by
+
+5
+
+Even longer.
+
+Multiply by
+
+0.5
+
+Half the size.
+
+Multiply by
+
+-1
+
+Now something interesting happens.
+
+The arrow flips.
+
+Original
+
+------>
+
+Negative
+
+<------
+
+So
+
+v1*3
+
+means
+
+Stretch the arrow
+
+three times.
+Magnitude (Length)
+
+Suppose your vector is
+
+(2,3)
+
+How long is the arrow?
+
+This is just a right triangle.
+
+      ●
+     /|
+    / |
+   /  |3
+  /   |
+ /____|
+   2
+
+Pythagoras says
+
+Length² = 2² + 3²
+
+=4+9
+
+=13
+
+Length
+
+√13
+
+≈3.605
+
+Exactly what Python computes with
+
+np.linalg.norm(v1)
+
+The word "norm" in linear algebra simply means the length (or size) of a vector.
+Dot Product
+
+This is one of the most important ideas in all of machine learning.
+
+Imagine two people pushing a box.
+
+Same direction
+
+---->
+
+---->
+
+They help each other.
+
+Large positive dot product.
+
+Perpendicular
+
+↑
+
+----->
+
+One pushes north.
+
+The other east.
+
+Neither helps the other move in the same direction.
+
+Dot product
+
+0
+
+Opposite
+
+---->
+
+<----
+
+One pushes right.
+
+One pushes left.
+
+They fight each other.
+
+Dot product becomes negative.
+
+This is exactly why your code uses
+
+a = [1,0]
+b = [1,0]
+
+Both point right.
+
+dot =1
+
+Positive.
+
+Next
+
+c=[0,1]
+
+One right.
+
+One up.
+
+dot=0
+
+Perpendicular.
+
+Finally
+
+d=[-1,0]
+
+One right.
+
+One left.
+
+dot=-1
+
+Opposite.
+The Actual Formula
+
+For two vectors:
+a=(ax,ay),b=(bx,by)
+a=(ax​,ay​),b=(bx​,by​)
+
+The dot product is:
+a⋅b=axbx+ayby
+a⋅b=ax​bx​+ay​by​
+
+For your vectors:
+(2,3)⋅(1,−1)=2×1+3×(−1)=2−3=−1
+(2,3)⋅(1,−1)=2×1+3×(−1)=2−3=−1
+
+The negative result tells us the vectors point more in opposite than in the same direction.
+
+There's also a deeper geometric interpretation:
+a⋅b=∣a∣ ∣b∣ cos⁡(θ)
+a⋅b=∣a∣∣b∣cos(θ)
+
+where:
+
+    ∣a∣∣a∣ and ∣b∣∣b∣ are the lengths of the vectors,
+
+    θθ is the angle between them.
+
+This explains why:
+
+    angle <90∘<90∘ → cos⁡(θ)cos(θ) is positive → positive dot product,
+
+    angle =90∘=90∘ → cos⁡(θ)=0cos(θ)=0 → dot product is zero,
+
+    angle >90∘>90∘ → cos⁡(θ)cos(θ) is negative → negative dot product.
+
+This formula is used throughout machine learning, computer graphics, robotics, and physics.
+Why NumPy Uses Arrays
+
+You might wonder why we write:
+
+np.array([2,3])
+
+instead of:
+
+x = 2
+y = 3
+
+Because computers work best when related values are stored together. A NumPy array lets Python treat the vector as one mathematical object, making operations like addition, scaling, dot products, and matrix multiplication efficient and easy.
+Why Machine Learning Loves Vectors
+
+Almost everything in ML becomes a vector:
+
+    An image is a huge vector of pixel values.
+
+    A sentence can be represented as a vector (an embedding).
+
+    A user's preferences become a vector.
+
+    Model parameters are stored as vectors.
+
+    Gradients are vectors.
+
+    Neural network weights are vectors and matrices.
+
+Linear algebra is the language that lets machines reason about all of these.
+What You Should Remember Today
+
+By the end of Day 1, these ideas should feel natural:
+
+    A vector is an arrow, not just a list of numbers.
+
+    The coordinates tell you how far to move in each direction.
+
+    Vector addition combines movements.
+
+    Scalar multiplication stretches, shrinks, or flips a vector.
+
+    The magnitude (norm) is the length of the arrow, computed using the Pythagorean theorem.
+
+    The dot product measures how aligned two vectors are:
+
+        Positive → similar directions
+
+        Zero → perpendicular
+
+        Negative → opposite directions
+
+If you're aiming for machine learning, I recommend learning far more deeply than most tutorials. We can treat this like a university course: every day I'll explain the underlying mathematics, geometric intuition, proofs where appropriate, and then connect each concept directly to Python and real ML applications. By the end, you'll understand not just how to use linear algebra, but why it works.
+
+You're absolutely right to question it. This output is not correct.
+
+If the code is correct, you should get something close to:
+
+Final: w ≈ 3.0
+Final: b ≈ 2.0
+Loss close to a very small number
+
+Instead, your output shows:
+
+w = -0.096
+b = 0.302
+loss = 0.2041   (never changes)
+
+The biggest clue is this:
+
+Epoch 0   loss = 0.2041
+Epoch 60  loss = 0.2041
+Epoch 120 loss = 0.2041
+...
+
+The loss never changes.
+
+That means gradient descent isn't actually learning.
+Let's debug it
+
+Please check these lines in your notebook exactly.
+1. Data generation
+
+Do you have:
+
+X = np.random.uniform(0, 5, 20)
+y = 3 * X + 2 + np.random.normal(0, 0.5, 20)
+
+2. Prediction
+
+y_pred = w * X + b
+
+3. Error
+
+error = y_pred - y
+
+4. Loss
+
+loss = np.mean(error ** 2)
+
+5. Gradient
+
+dw = (2/n) * np.dot(error, X)
+db = (2/n) * np.sum(error)
+
+6. Update
+
+w = w - lr * dw
+b = b - lr * db
+
+I suspect one of these happened
+Possibility 1 (Most likely)
+
+You accidentally changed
+
+y = 3 * X + 2
+
+to something like
+
+y = 0
+
+or
+
+y = X
+
+Possibility 2
+
+You changed
+
+error = y_pred - y
+
+to
+
+error = y - y_pred
+
+This isn't always wrong by itself (you'd just update differently), but if you also kept subtracting the gradient, the optimization can go in the wrong direction.
+Possibility 3
+
+You accidentally overwrote X, y, w, b, or lr somewhere else in the notebook.
+Possibility 4
+
+You didn't rerun all the cells after making changes, so old variable values remained in memory.
+What should happen?
+
+On the first epoch, your values should look roughly like this:
+
+Epoch 0
+loss ≈ 100–150
+w ≈ 0.9
+b ≈ 0.3
+
+Not exactly those numbers, because the data is random, but the loss should start high and then decrease steadily.
+
+Eventually you'll see something like:
+
+Epoch 0    loss = 120.5
+Epoch 60   loss = 1.8
+Epoch 120  loss = 0.35
+Epoch 180  loss = 0.24
+Epoch 240  loss = 0.21
+
+Final:
+w = 2.97
+b = 2.08
+
+What I need from you
+
+Please paste these lines exactly as they appear in your notebook:
+
+np.random.seed(...)
+X = ...
+y = ...
+
+w = ...
+b = ...
+lr = ...
+n = ...
+
+for epoch in range(...):
+    y_pred = ...
+    error = ...
+    loss = ...
+    dw = ...
+    db = ...
+    w = ...
+    b = ...
+
+Don't summarize them—copy and paste the code exactly.
+
+We'll find the bug in a minute. I suspect it's just one small mistake.
+
+print("\n" + "="*50)
+print("MINI TRAINING LOOP — the blueprint of all ML")
+print("="*50)
+
+np.random.seed(42)
+X = np.random.uniform(0, 5, 20)
+y = 3 * X + 2 + np.random.normal(0, 0.5, 20)
+w = 0.0
+b = 0.0
+lr = 0.01
+n = len(X)
+print("n = ", n)
+loss = []
+for epoch in range(300):
+    y_predict = w*X+b
+    error = y_pred - y
+    # print("error", error)
+    loss = np.mean(error**2)
+    # print("loss = " ,loss)
+    losses.append(loss)
+    dw = (2/n) * np.dot(error, X)
+    db = (2/n) * np.sum(error)
+    w = w - lr * dw
+    b = b - lr * db
+    if epoch % 60 == 0:
+        print(f"Epoch {epoch:3d} | loss={loss:.4f} | "
+              f"w={w:.3f} | b={b:.3f}")
+
+print(f"\nFinal:  w={w:.3f} (true=3.0)  b={b:.3f} (true=2.0)")
+print(f"Model discovered the true values just by taking steps!")
+
+I found the bug immediately.
+
+Look very carefully at these two lines:
+
+y_predict = w * X + b
+
+Then later:
+
+error = y_pred - y
+
+Do you see it?
+
+You created a variable called:
+
+y_predict
+
+but you are using:
+
+y_pred
+
+These are different variable names.
+Normally, this should give an error
+
+Normally Python should say:
+
+NameError: name 'y_pred' is not defined
+
+But your notebook didn't.
+
+That tells me y_pred already existed from an earlier run in your Jupyter notebook.
+
+Remember:
+
+    Jupyter keeps variables in memory until you restart the kernel.
+
+So your notebook is probably using an old value of y_pred from a previous execution.
+
+That explains why:
+
+    the loss stays almost constant,
+
+    the model doesn't learn,
+
+    w barely changes.
+
+Fix it
+
+Either rename the prediction variable to y_pred:
+
+y_pred = w * X + b
+error = y_pred - y
+
+or keep y_predict everywhere:
+
+y_predict = w * X + b
+error = y_predict - y
+
+Just be consistent.
+I also noticed another issue
+
+You have
+
+loss = []
+
+and later
+
+loss = np.mean(error**2)
+
+Here you're changing loss from a list into a number.
+
+In the original notebook it should be:
+
+losses = []
+
+Then inside the loop:
+
+loss = np.mean(error**2)
+losses.append(loss)
+
+Notice the difference:
+
+    loss → one number for the current epoch.
+
+    losses → a list storing the loss from every epoch.
+
+Before running again
+
+In Jupyter, click:
+
+Kernel → Restart Kernel and Run All Cells
+
+or
+
+Restart & Run All
+
+This clears all old variables, including the stale y_pred.
+The corrected core loop should be
+
+losses = []
+
+for epoch in range(300):
+    y_pred = w * X + b
+
+    error = y_pred - y
+
+    loss = np.mean(error ** 2)
+    losses.append(loss)
+
+    dw = (2/n) * np.dot(error, X)
+    db = (2/n) * np.sum(error)
+
+    w = w - lr * dw
+    b = b - lr * db
+
+A tip for Jupyter
+
+This is one of the biggest beginner pitfalls.
+
+If you accidentally run cells out of order, variables from old runs stay in memory and can produce confusing results. Whenever your output doesn't make sense:
+
+    Restart the kernel.
+
+    Run all cells from the top.
+
+That ensures you're working with a clean state and avoids exactly this kind of bug.
+
+one more time tell me why we take derivative of loss function why not the original function 
+
+I'm glad you asked again, because this is the question that separates understanding machine learning from just memorizing formulas.
+
+Let's think about it like a professor, from first principles.
+Step 1: What is our goal?
+
+Suppose we want to predict house prices.
+
+Our model is
+y^=wx+b
+y^​=wx+b
+
+This is our original function (also called the model).
+
+It takes an input xx and produces a prediction.
+
+For example:
+
+House size = 1200 sq ft
+
+Model predicts = $250,000
+
+The model has done its job: it made a prediction.
+
+But now ask yourself:
+
+    Is $250,000 good or bad?
+
+The model cannot answer that.
+
+It only knows how to predict.
+Step 2: We compare with reality
+
+Suppose the true price is
+
+Actual = $280,000
+
+Now we can measure the mistake.
+
+Prediction = 250,000
+
+Actual = 280,000
+
+Error = -30,000
+
+Now we know the prediction was wrong.
+Step 3: We create the loss function
+
+For example:
+L=(y^−y)2
+L=(y^​−y)2
+
+This function measures how bad the prediction is.
+
+If prediction equals reality:
+
+Prediction = 280,000
+
+Actual = 280,000
+
+Loss = 0
+
+Perfect.
+So what are we trying to improve?
+
+Ask yourself:
+
+Do we want to change
+
+The prediction?
+
+No.
+
+Or do we want to reduce
+
+The mistake?
+
+Yes.
+
+The mistake is represented by the loss.
+Imagine taking an exam
+
+Suppose you answer
+
+Q1 = B
+Q2 = C
+Q3 = A
+
+Those answers are like the model's predictions.
+
+Now the teacher grades them.
+
+Score = 30/100
+
+What do you want to improve?
+
+Your answers.
+
+Why?
+
+Because your score is low.
+
+Notice something important:
+
+You don't change your answers because the answers themselves are "bad."
+
+You change them because the score tells you they are bad.
+
+The score (loss) is what guides improvement.
+What if we differentiate the model?
+
+Our model is
+y^=wx+b
+y^​=wx+b
+
+Differentiate with respect to ww.
+∂y^∂w=x
+∂w∂y^​​=x
+
+Suppose
+
+x = 5
+
+Then
+
+Derivative = 5
+
+What does that tell us?
+
+It tells us:
+
+    If I increase ww, the prediction increases.
+
+That's useful information about the model's behavior.
+
+But it says nothing about whether increasing the prediction will make the prediction more accurate.
+Example
+
+Suppose
+
+Prediction = 20
+
+Actual = 100
+
+The derivative of the model says
+
+Increase w → prediction goes up
+
+Great.
+
+That happens to be the correct direction.
+
+Now another example.
+
+Prediction = 120
+
+Actual = 100
+
+The derivative of the model is still
+
+Increase w → prediction goes up
+
+But this time, increasing the prediction makes things worse.
+
+You actually need to decrease the prediction.
+
+The derivative of the model cannot tell the difference between these two situations.
+
+Why?
+
+Because it never looks at the actual answer.
+The loss function does
+
+The loss is
+L=(y^−y)2
+L=(y^​−y)2
+
+Notice it contains both:
+
+    prediction (y^y^​)
+
+    actual answer (yy)
+
+When we differentiate the loss, the gradient depends on both.
+
+That means the gradient changes depending on whether the prediction is too high or too low.
+
+This is exactly what we need.
+Think of a GPS
+
+Your model is like your current location.
+
+You are here.
+
+Your destination is the correct answer.
+
+The loss is the distance to the destination.
+
+If your GPS only tells you
+
+Current location:
+
+Can you reach your destination?
+
+No.
+
+You also need to know
+
+How far am I from the destination?
+
+The derivative of the loss is like the GPS saying:
+
+    "Turn left."
+
+It uses both your location and the destination to compute the direction.
+The chain of information
+
+Input (X)
+      │
+      ▼
+Model
+ŷ = wx + b
+      │
+      ▼
+Prediction
+      │
+      ▼
+Compare with Actual y
+      │
+      ▼
+Loss
+      │
+      ▼
+Derivative of Loss
+      │
+      ▼
+Update w and b
+
+Notice that the actual answer first appears in the loss.
+
+That's why we differentiate the loss.
+A mathematical view
+
+The loss is
+L=(wx+b−y)2
+L=(wx+b−y)2
+
+Notice something important.
+
+The model is inside the loss.
+
+When we compute
+∂L∂w
+∂w∂L​
+
+we are actually differentiating
+(wx+b−y)2.
+(wx+b−y)2.
+
+So the derivative still knows about the model, because the model is part of the loss function.
+
+In other words:
+
+    We are not ignoring the original function.
+
+    We are differentiating a function that contains the original function.
+
+This is why the chain rule is used.
+The most important sentence
+
+Think of it this way:
+
+    The model answers: "What do I predict?"
+
+    The loss answers: "How wrong is that prediction?"
+
+    The derivative of the loss answers: "How should I change my parameters to become less wrong?"
+
+Only the third answer tells us how to learn.
+One final intuition
+
+Imagine you and I are playing darts.
+
+The model is your throw.
+
+The bullseye is the correct answer.
+
+Would a coach tell you:
+
+    "Throw differently because that's how your arm moves."
+
+No.
+
+The coach first looks at how far your dart landed from the bullseye, and then tells you how to adjust.
+
+Machine learning does the same thing.
+
+The loss measures the miss, and the derivative of the loss tells the model how to adjust its throw so that the next prediction lands closer to the target.
+
+
